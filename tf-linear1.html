@@ -1,0 +1,34 @@
+<html>
+    <head>
+        <title>Linear Regression Tensorflow Introduction</title>
+        <!--Load TensorFlow-->
+        <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@0.11.2"></script>
+    </head>
+    <body>
+        <h1>Basic Linear Regression</h1>
+        <input type="number" name="numIn" id="num"/>
+        <button onclick="learnLinear(document.getElementById('num').value)">Go</button>
+        <div id="output_result"></div>
+    </body>
+    <script>
+        async function learnLinear(userInput){
+            if(num === ""){
+                num = 0;
+            }
+            const model = tf.sequential();
+            model.add(tf.layers.dense({units: 1, inputShape: [1]}));
+            model.compile({
+                loss: 'meanSquaredError',
+                optimizer: 'sgd'
+            });
+            
+            const xs = tf.tensor2d([-5,-4,-3,-2,-1,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16], [22, 1]);
+            const ys = tf.tensor2d([-11,-9,-7,-5,-3,-1,1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31], [22,1]);
+            
+            await model.fit(xs,ys,{epochs:500});
+            
+            document.getElementById('output_result').innerText = model.predict(tf.tensor2d([userInput], [1,1]));
+        }
+        learnLinear();
+    </script>
+</html>
